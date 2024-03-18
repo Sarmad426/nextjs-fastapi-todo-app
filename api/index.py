@@ -1,10 +1,10 @@
 from typing import Optional
 
 
-from fastapi import FastAPI, Request, Form
+from fastapi import FastAPI, Request, Form, Depends
 from sqlmodel import Field, Session, SQLModel, create_engine, select
 from fastapi.responses import HTMLResponse
-
+from typing import Annotated
 
 class Todo(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
@@ -30,22 +30,17 @@ app = FastAPI()
 def on_startup():
     create_db_and_tables()
 
-
-@app.post("/todos/", response_class=HTMLResponse)
-async def submit_form(
-    request: Request,
-    title: str = Form(...),
-    completed: str = Form(...),
-):
-    # Create a new Todo instance
+def get_session():
     with Session(engine) as session:
-        todo = Todo(title=title, completed=completed)
+        yield session
 
-        # Add the todo to the database
+
+@app.post("/api/todos/new", response_model=Todo)
+def create_todo(todo: Todo, session: Annotated[Session, Depends(get_session)]):
         session.add(todo)
         session.commit()
         session.refresh(todo)
-        return {'todo':todo}
+        return todo
 
 
 @app.get("/api/todos")
@@ -62,7 +57,7 @@ async def delete_todo(todo_id: int):
     """
     with Session(engine) as session:
         # Retrieve the todo by ID
-        todo: Todo = session.query(Todo).filter_by(id=todo_id).first()
+        todo: Todo = session.exec(Todo).filter_by(id=todo_id).first()
 
         if todo:
             # Delete the todo from the database
