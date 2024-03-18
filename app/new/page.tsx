@@ -1,9 +1,8 @@
 "use client";
 
-// components/TodoForm.tsx
-
 import { useState } from "react";
 import axios from "axios";
+import toast from "react-hot-toast";
 
 const TodoForm = () => {
   const [title, setTitle] = useState("");
@@ -17,8 +16,10 @@ const TodoForm = () => {
       // Reset the form fields after successful submission
       setTitle("");
       setCompleted(false);
+      toast.success("Todo Added successfully.");
     } catch (error) {
       console.error("Error submitting todo:", error);
+      toast.error("Something went wrong!");
     }
   };
 
