@@ -1,5 +1,5 @@
 import Todos from "@/components/todos";
-import { buttonVariants } from "@/components/ui/button";
+import { Button } from "@/components/ui/button";
 import logo from "@/public/logo.png";
 import { PlusCircle } from "lucide-react";
 import Image from "next/image";
@@ -25,9 +25,11 @@ const Home = async () => {
           </p>
         </div>
         <div>
-          <Link href="/new" className={buttonVariants()}>
-            Add New <PlusCircle className="ml-2" />
-          </Link>
+          <Button className="text-gray-200 bg-black" asChild>
+            <Link href="/new">
+              Add New <PlusCircle className="ml-2" />
+            </Link>
+          </Button>
         </div>
       </div>
       <div className="flex items-center justify-center gap-16 flex-wrap">
