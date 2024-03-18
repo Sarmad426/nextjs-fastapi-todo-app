@@ -5,6 +5,8 @@ interface todos {
   completed: boolean;
 }
 
+export const revalidate = 0;
+
 const Home = async () => {
   const apiRequest = await fetch("http://localhost:3000/api/todos");
   const data: { todos: todos[] } = await apiRequest.json();
@@ -22,7 +24,7 @@ const Home = async () => {
             <span>{todo.title}</span>
             <input
               type="checkbox"
-              checked={todo.completed}
+              // checked={todo.completed}
               // onChange={() => handleTodoToggle(todo.id)}
               className="form-checkbox h-5 w-5 text-indigo-600"
             />
