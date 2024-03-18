@@ -52,7 +52,7 @@ const TodoItem = ({ id, title, completed }: todos) => {
       <section>
         <Button
           size="sm"
-          variant="destructive"
+          className="bg-rose-600 text-gray-100"
           onClick={() => handleDelete(id)}
         >
           <Trash />
