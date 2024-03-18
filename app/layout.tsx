@@ -16,9 +16,12 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`${inter.className} flex items-center justify-center`}>
-        {children}
+      <head>
+        <link rel="icon" type="png" href="logo.png" />
+      </head>
+      <body className={inter.className}>
         <ToastProvider />
+        {children}
       </body>
     </html>
   );
