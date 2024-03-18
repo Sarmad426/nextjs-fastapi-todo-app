@@ -1,7 +1,7 @@
 from typing import Optional
 
 
-from fastapi import FastAPI, Request, Form, Depends
+from fastapi import FastAPI, Request, Form, Depends,HTTPException
 from sqlmodel import Field, Session, SQLModel, create_engine, select
 from fastapi.responses import HTMLResponse
 from typing import Annotated
@@ -66,3 +66,14 @@ async def delete_todo(todo_id: int):
             return {"message": f"Todo with ID {todo_id} deleted successfully"}
         else:
             return {"message": f"Todo with ID {todo_id} not found"}
+
+
+
+@app.put("/api/todos/{todo_id}", response_model=Todo)
+async def update_todo(todo_id: int, completed: bool, session: Annotated[Session, Depends(get_session)]):
+    todo = session.query(Todo).filter(Todo.id == todo_id).first()
+    if not todo:
+        raise HTTPException(status_code=404, detail="Todo not found")
+    todo.completed = completed
+    session.commit()
+    return todo
