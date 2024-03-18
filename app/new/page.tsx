@@ -1,44 +1,28 @@
 "use client";
 
 import { useState } from "react";
-import axios from "axios";
-import toast from "react-hot-toast";
 
-const TodoForm = () => {
-  const [title, setTitle] = useState("");
-  const [completed, setCompleted] = useState(false);
+import TodoForm from "@/components/todo-form";
+import Image from "next/image";
+import logo from "@/public/logo.png";
+import Link from "next/link";
+import { Button, buttonVariants } from "@/components/ui/button";
+import { EyeIcon } from "lucide-react";
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    try {
-      const data = { title, completed };
-      await axios.post("http://localhost:3000/api/todos/new", data);
-      // Reset the form fields after successful submission
-      setTitle("");
-      setCompleted(false);
-      toast.success("Todo Added successfully.");
-    } catch (error) {
-      console.error("Error submitting todo:", error);
-      toast.error("Something went wrong!");
-    }
-  };
-
+const NewTodoForm = () => {
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="flex items-center justify-center gap-x-5"
-    >
-      <input
-        type="text"
-        className="text-black w-[18rem] h-[2.3rem]"
-        name="title"
-        required
-      />
-      <button className="bg-white text-black p-3 rounded-md hover:bg-gray-100">
-        Submit
-      </button>
-    </form>
+    <main>
+      <div className="mt-3 mb-5 flex items-center justify-center gap-x-32">
+        <Image src={logo} alt="Logo" className="w-16 rounded-full" />
+        <Button className="bg-black text-gray-200" asChild>
+          <Link href="/" className={buttonVariants()}>
+            View Todos <EyeIcon className="ml-2" />
+          </Link>
+        </Button>
+      </div>
+      <TodoForm />
+    </main>
   );
 };
 
-export default TodoForm;
+export default NewTodoForm;
