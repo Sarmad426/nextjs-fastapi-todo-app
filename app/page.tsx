@@ -1,9 +1,10 @@
-import React from "react";
-
-interface todos {
-  title: string;
-  completed: boolean;
-}
+import Todos from "@/components/todos";
+import { buttonVariants } from "@/components/ui/button";
+import logo from "@/public/logo.png";
+import { PlusCircle } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
+import { todos } from "@/lib/types";
 
 export const revalidate = 0;
 
@@ -11,26 +12,38 @@ const Home = async () => {
   const apiRequest = await fetch("http://localhost:3000/api/todos");
   const data: { todos: todos[] } = await apiRequest.json();
   const { todos } = data;
-  console.log(todos);
+  const leftTodos = todos.filter((todo) => !todo.completed);
+  const completedTodos = todos.filter((todo) => todo.completed);
   return (
-    <div className="container mx-auto">
-      <h1 className="text-2xl font-bold mb-4">Todo List</h1>
-      <ul>
-        {todos.map((todo, index) => (
-          <li
-            key={index}
-            className="bg-gray-200 text-black rounded-lg p-4 shadow mb-4 flex justify-between items-center"
-          >
-            <span>{todo.title}</span>
-            <input
-              type="checkbox"
-              // checked={todo.completed}
-              // onChange={() => handleTodoToggle(todo.id)}
-              className="form-checkbox h-5 w-5 text-indigo-600"
-            />
-          </li>
-        ))}
-      </ul>
+    <div>
+      <div className="mt-3 mb-5 flex items-center justify-center">
+        <div>
+          <Image src={logo} alt="Logo" className="w-16 rounded-full my-3" />
+          <h2 className="text-3xl font-semibold my-4">Todo App</h2>
+          <p className="my-3 text-muted-foreground">
+            Be Productive by managing tasks efficiently.
+          </p>
+        </div>
+        <div>
+          <Link href="/new" className={buttonVariants()}>
+            Add New <PlusCircle className="ml-2" />
+          </Link>
+        </div>
+      </div>
+      <div className="flex items-center justify-center gap-16 flex-wrap">
+        <div className="lg:w-1/3 md:w-2/5 w-[95%] p-6 overflow-scroll no-scrollbar border h-[25rem]">
+          <h3 className="text-2xl font-semibold text-center text-gray-700">
+            Pending Tasks
+          </h3>
+          <Todos todos={leftTodos} />
+        </div>
+        <div className="lg:w-1/3 md:w-2/5 w-[95%] p-6 overflow-scroll no-scrollbar border h-[25rem]">
+          <h3 className="text-2xl font-semibold text-center text-gray-700">
+            Completed Tasks
+          </h3>
+          <Todos todos={completedTodos} />
+        </div>
+      </div>
     </div>
   );
 };
