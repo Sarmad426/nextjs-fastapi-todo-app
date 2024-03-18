@@ -49,31 +49,25 @@ def read_todos():
         todos = session.exec(select(Todo)).all()
         return {"todos": todos}
 
-@app.post("/delete/{todo_id}")
-async def delete_todo(todo_id: int):
+@app.post("/api/delete/{todo_id}",response_model=Todo)
+async def delete_todo(todo: Todo,session: Annotated[Session, Depends(get_session)]):
     """
     Deletes the todo with the specified ID from the database.
     Assumes you have a database session (e.g., SQLAlchemy session) set up.
     """
-    with Session(engine) as session:
-        # Retrieve the todo by ID
-        todo: Todo = session.exec(Todo).filter_by(id=todo_id).first()
-
-        if todo:
-            # Delete the todo from the database
-            session.delete(todo)
-            session.commit()
-            return {"message": f"Todo with ID {todo_id} deleted successfully"}
-        else:
-            return {"message": f"Todo with ID {todo_id} not found"}
-
+    db_todo = session.query(Todo).filter(Todo.id == todo.id).first()
+    if not db_todo:
+        raise HTTPException(status_code=404, detail="Todo not found")
+    session.delete(db_todo)
+    session.commit()
+    return db_todo
 
 
 @app.put("/api/todos/{todo_id}", response_model=Todo)
-async def update_todo(todo_id: int, completed: bool, session: Annotated[Session, Depends(get_session)]):
-    todo = session.query(Todo).filter(Todo.id == todo_id).first()
-    if not todo:
+async def update_todo(todo:Todo, session: Annotated[Session, Depends(get_session)]):
+    db_todo = session.query(Todo).filter(Todo.id == todo.id).first()
+    if not db_todo:
         raise HTTPException(status_code=404, detail="Todo not found")
-    todo.completed = completed
+    db_todo.completed = todo.completed
     session.commit()
     return todo
