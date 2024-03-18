@@ -23,29 +23,22 @@ const TodoForm = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-4 p-4">
-      <input
-        type="text"
-        value={title}
-        onChange={(e) => setTitle(e.target.value)}
-        placeholder="Todo title"
-        className="text-gray-800 p-2 border-2 border-gray-200 rounded-md focus:outline-none focus:border-blue-500"
-      />
-      <label className="flex items-center gap-2">
+    <form onSubmit={handleSubmit} className="w-full max-w-sm mx-auto mt-4">
+      <div className="flex items-center border-b-2 border-teal-500 py-2">
         <input
-          type="checkbox"
-          checked={completed}
-          onChange={(e) => setCompleted(e.target.checked)}
-          className="w-5 h-5"
+          type="text"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+          placeholder="Add a new todo"
+          className="appearance-none bg-transparent border-none w-full text-gray-200 mr-3 py-1 px-2 leading-tight focus:outline-none"
         />
-        Completed
-      </label>
-      <button
-        type="submit"
-        className="p-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
-      >
-        Add Todo
-      </button>
+        <button
+          type="submit"
+          className="flex-shrink-0 bg-teal-500 hover:bg-teal-700 border-teal-500 hover:border-teal-700 text-sm border-4 text-white py-1 px-2 rounded"
+        >
+          Add
+        </button>
+      </div>
     </form>
   );
 };
