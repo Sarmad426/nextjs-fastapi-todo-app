@@ -4,22 +4,29 @@ import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import { Button } from "@/components/ui/button";
 import { todos } from "@/lib/types";
+import axios from "axios";
 
 const TodoItem = ({ id, title, completed }: todos) => {
   const router = useRouter();
 
-  const handleDelete = (id: string) => {
+  const handleDelete = async (id: any) => {
     try {
-      //   deleteTodo(id);
+      await axios.post(`http://localhost:3000/api/delete/${id}`, {
+        id,
+      });
       router.refresh();
       toast.success("Todo deleted successfully.");
     } catch {
       toast.error("Something went wrong.");
     }
   };
-  function toggleTodo(id: string, completed: boolean) {
+  async function toggleTodo(id: string, completed: boolean) {
+    console.log({ id, completed });
     try {
-      //   updateTodo(id, completed);
+      await axios.put(`http://localhost:3000/api/todos/${id}`, {
+        id,
+        completed,
+      });
       router.refresh();
     } catch {
       toast.error("Something went wrong");
