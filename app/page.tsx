@@ -9,7 +9,9 @@ import { todos } from "@/lib/types";
 export const revalidate = 0;
 
 const Home = async () => {
-  const apiRequest = await fetch("http://localhost:3000/api/todos");
+  const apiRequest = await fetch(
+    "https://nextjs-fastapi-todo-brbdydn5b-sarmad426.vercel.app/api/todos"
+  );
   const data: { todos: todos[] } = await apiRequest.json();
   const { todos } = data;
   const leftTodos = todos.filter((todo) => !todo.completed);
