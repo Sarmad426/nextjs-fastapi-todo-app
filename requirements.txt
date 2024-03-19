@@ -2,7 +2,6 @@ fastapi==0.100.1
 uvicorn[standard]==0.23.2
 pydantic
 sqlmodel
-psycopg2
-psycopg
+psycopg2-binary
 requests
 python-dotenv
