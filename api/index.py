@@ -1,9 +1,8 @@
 from typing import Optional
 
 from contextlib import asynccontextmanager
-from fastapi import FastAPI, Request, Form, Depends,HTTPException
+from fastapi import FastAPI, Depends,HTTPException
 from sqlmodel import Field, Session, SQLModel, create_engine, select
-from fastapi.responses import HTMLResponse
 from typing import Annotated
 from .settings import DATABASE_URL
 
@@ -16,11 +15,6 @@ connection_string = str(DATABASE_URL).replace(
 "postgresql", "postgresql+psycopg2"
 )
 
-# engine = create_engine(
-#     connection_string, pool_recycle=300
-# )
-
-# connect_args = {"check_same_thread": False}
 engine = create_engine(connection_string)
 
 
@@ -35,14 +29,7 @@ async def lifespan(app: FastAPI):
     yield
 
 
-app = FastAPI(lifespan=lifespan, title="Hello World API with DB", 
-    version="0.0.1",
-    servers=[
-        {
-            "url": "http://localhost:3000", # ADD NGROK URL Here Before Creating GPT Action
-            "description": "Development Server"
-        }
-        ])
+app = FastAPI(lifespan=lifespan)
 
 @app.on_event("startup")
 def on_startup():
