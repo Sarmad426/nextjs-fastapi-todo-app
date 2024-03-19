@@ -3,5 +3,6 @@ uvicorn[standard]==0.23.2
 pydantic
 sqlmodel
 psycopg2
+psycopg
 requests
 python-dotenv
