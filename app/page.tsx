@@ -9,13 +9,19 @@ import { todos } from "@/lib/types";
 export const revalidate = 0;
 
 const Home = async () => {
-  const apiRequest = await fetch(
-    "https://nextjs-fastapi-todo-brbdydn5b-sarmad426.vercel.app/api/todos"
-  );
-  const data: { todos: todos[] } = await apiRequest.json();
-  const { todos } = data;
+  const apiRequest = await fetch("http://localhost:3000/api/todos");
+  // const data: { todos: todos[] } = await apiRequest.json();
+  // const { todos } = data;
+  // const leftTodos = todos.filter((todo) => !todo.completed);
+  // const completedTodos = todos.filter((todo) => todo.completed);
+  const todos = [
+    { id: 1, title: "First Title", completed: false },
+    { id: 2, title: "second title", completed: true },
+  ];
   const leftTodos = todos.filter((todo) => !todo.completed);
+
   const completedTodos = todos.filter((todo) => todo.completed);
+
   return (
     <div>
       <div className="mt-3 mb-5 flex items-center justify-center">
