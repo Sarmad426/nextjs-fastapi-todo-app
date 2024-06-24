@@ -10,8 +10,9 @@ const TodoItem = ({ id, title, completed }: todos) => {
   const router = useRouter();
 
   const handleDelete = async (id: any) => {
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL;
     try {
-      await axios.post(`http://localhost:3000/api/delete/${id}`, {
+      await axios.post(`${apiUrl}/api/delete/${id}`, {
         id,
       });
       router.refresh();
@@ -22,8 +23,9 @@ const TodoItem = ({ id, title, completed }: todos) => {
   };
   async function toggleTodo(id: string, completed: boolean) {
     console.log({ id, completed });
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL;
     try {
-      await axios.put(`http://localhost:3000/api/todos/${id}`, {
+      await axios.put(`${apiUrl}/api/todos/${id}`, {
         id,
         completed,
       });
