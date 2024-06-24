@@ -2,6 +2,7 @@ from typing import Optional
 
 from contextlib import asynccontextmanager
 from fastapi import FastAPI, Depends,HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 from sqlmodel import Field, Session, SQLModel, create_engine, select
 from typing import Annotated
 from .settings import DATABASE_URL
@@ -30,6 +31,21 @@ async def lifespan(app: FastAPI):
 
 
 app = FastAPI(lifespan=lifespan)
+
+origins = [
+    "http://localhost",
+    "http://localhost:3000",
+    "http://localhost:8000",
+    "https://nextjs-fastapi-todo-app-eosin.vercel.app/",
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 @app.on_event("startup")
 def on_startup():
