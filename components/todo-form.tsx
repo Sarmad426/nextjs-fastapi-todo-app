@@ -24,9 +24,11 @@ const TodoForm = () => {
   const router = useRouter();
 
   const onSubmit: SubmitHandler<FormInputs> = async (data) => {
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+    console.log("API URL", apiUrl);
     try {
       setLoading(true);
-      await axios.post("http://localhost:3000/api/todos/new", {
+      await axios.post(`${apiUrl}/api/todos/new`, {
         title: data.todo,
         completed: false,
       });
